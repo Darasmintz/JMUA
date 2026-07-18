@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JMUA COUTURE – Luxury Custom Jerseys</title>
+    <meta name="description" content="JMUA COUTURE – Premium custom jerseys. Personalize your style with luxury apparel." />
+    <meta name="theme-color" content="#0A0A0A" />
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="logo.png" />
+    <link rel="shortcut icon" type="image/png" href="logo.png" />
+    <link rel="apple-touch-icon" href="logo.png" />
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet" />
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    
+    <!-- EmailJS -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+    <!-- ===== NAVIGATION ===== -->
+    <nav class="navbar" id="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <img src="logo.png" alt="JMUA COUTURE Logo" onerror="this.style.display='none'" />
+                <a href="#hero" style="white-space: nowrap;"><span class="gold-text">JMUA</span> COUTURE</a>
+            </div>
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+                <span></span><span></span><span></span>
+            </button>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="#hero" class="active">Home</a></li>
+                <li><a href="#products">Jerseys</a></li>
+                <li><a href="#customize">Customize</a></li>
+                <li><a href="#showcase">Showcase</a></li>
+                <li><a href="#admin" class="nav-admin"><i class="fas fa-crown"></i> Admin</a></li>
+                <li><a href="#" class="nav-auth-btn" id="authBtn"><i class="fas fa-user"></i> Sign In</a></li>
+                <li class="nav-user" id="navUser" style="display:none;">
+                    <i class="fas fa-user-circle"></i>
+                    <span id="userNameDisplay">User</span>
+                    <a href="#" id="logoutBtn" style="color:rgba(255,255,255,0.4);font-size:0.8rem;margin-left:0.5rem;">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- ===== HERO SECTION ===== -->
+    <section class="hero" id="hero">
+        <div class="hero-bg-image"></div>
+        <div class="floating-curves">
+            <div class="curve curve-1"></div>
+            <div class="curve curve-2"></div>
+            <div class="curve curve-3"></div>
+            <div class="curve-ribbon"></div>
+        </div>
+        <div class="hero-overlay"></div>
+        
+        <div class="container hero-content">
+            <div class="hero-badge">
+                <span class="badge-dot"></span>
+                <span>Premium Collection 2026</span>
+            </div>
+            <h1 class="hero-title"><span class="gold-text">JMUA</span> COUTURE</h1>
+            <p class="hero-subtitle">Where Luxury Meets Personal Expression</p>
+            <div class="hero-divider"></div>
+            <p class="hero-description">
+                Discover premium custom jerseys crafted to your vision. Personalize every detail and experience true couture.
+            </p>
+            <div class="hero-actions">
+                <a href="#products" class="btn btn-primary" id="exploreBtn">
+                    <i class="fas fa-tshirt"></i> Explore Jerseys
+                </a>
+                <a href="#customize" class="btn btn-outline" id="customizeBtn">
+                    <i class="fas fa-pen-fancy"></i> Customize Yours
+                </a>
+            </div>
+        </div>
+        
+        <div class="scroll-indicator">
+            <div class="scroll-mouse"></div>
+            <div class="scroll-arrow"><i class="fas fa-chevron-down"></i></div>
+        </div>
+    </section>
+
+    <!-- ===== PRODUCTS SECTION ===== -->
+    <section class="products" id="products">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Collection</span>
+                <h2 class="section-title">Premium <span class="gold-text">Jerseys</span></h2>
+                <p class="section-subtitle">Discover our premium custom jersey collection</p>
+            </div>
+            
+            <div class="product-grid" id="productGrid">
+                <!-- Products loaded dynamically -->
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== CUSTOMIZE SECTION ===== -->
+    <section class="customize" id="customize">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Customize</span>
+                <h2 class="section-title">Design Your <span class="gold-text">Jersey</span></h2>
+                <p class="section-subtitle">Personalize every detail of your custom jersey</p>
+            </div>
+            
+            <div class="customize-layout">
+                <!-- Product Selector -->
+                <div class="customize-selector">
+                    <h3><i class="fas fa-tshirt"></i> Select Your Jersey</h3>
+                    <div class="product-select" id="productSelect">
+                        <!-- Options loaded dynamically -->
+                    </div>
+                </div>
+                
+                <!-- Customization Form -->
+                <div class="customize-form" id="customizeForm">
+                    <h3><i class="fas fa-sliders-h"></i> Customize Your Jersey</h3>
+                    
+                    <div class="form-group">
+                        <label>Age Category</label>
+                        <div class="age-options" id="ageOptions">
+                            <button class="age-btn active" data-age="adult">Adult</button>
+                            <button class="age-btn" data-age="children">Children</button>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Custom Name</label>
+                        <input type="text" id="customName" placeholder="Enter your name (max 15 chars)" maxlength="15" />
+                        <small class="form-hint">Leave empty for no name customization</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Custom Number</label>
+                        <input type="text" id="customNumber" placeholder="Enter your number (max 2 digits)" maxlength="2" />
+                        <small class="form-hint">Choose a number between 0-99</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Select Color</label>
+                        <div class="color-options" id="colorOptions">
+                            <!-- Options loaded dynamically -->
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Select Size</label>
+                        <div class="size-options" id="sizeOptions">
+                            <!-- Options loaded dynamically -->
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Quantity</label>
+                        <div class="quantity-control">
+                            <button class="qty-btn" id="qtyMinus"><i class="fas fa-minus"></i></button>
+                            <input type="number" class="qty-input" id="qtyInput" value="1" min="1" max="999" />
+                            <button class="qty-btn" id="qtyPlus"><i class="fas fa-plus"></i></button>
+                        </div>
+                        <small class="form-hint">Enter any quantity between 1-999</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Currency</label>
+                        <div class="currency-options" id="currencyOptions">
+                            <button class="currency-btn active" data-currency="naira">₦ Naira</button>
+                            <button class="currency-btn" data-currency="dollar">$ Dollar</button>
+                            <button class="currency-btn" data-currency="pound">£ Pound</button>
+                            <button class="currency-btn" data-currency="euro">€ Euro</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Price Display Card -->
+                    <div class="price-card" id="priceCard">
+                        <h4><i class="fas fa-calculator"></i> Price Summary</h4>
+                        <div class="price-row" id="priceWithName">
+                            <span>With Name</span>
+                            <span class="price-amount" id="priceWithNameAmount">₦80,000</span>
+                        </div>
+                        <div class="price-row" id="priceNoName">
+                            <span>No Name</span>
+                            <span class="price-amount" id="priceNoNameAmount">₦70,000</span>
+                        </div>
+                        <div class="price-divider"></div>
+                        <div class="price-total" id="priceTotal">
+                            <span>Total</span>
+                            <span class="price-amount gold-text" id="priceTotalAmount">₦160,000</span>
+                        </div>
+                        <div class="price-details">
+                            <span id="priceNameStatus">✅ With Name Selected</span>
+                            <span id="priceQtyInfo">Qty: 1</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group" style="margin-top: 1.5rem;">
+                        <button class="btn btn-primary btn-block" id="preOrderBtn">
+                            <i class="fas fa-shopping-bag"></i> Pre-Order Now
+                        </button>
+                    </div>
+                </div>
+                
+               <!-- Live Preview - Two Cards + Name/Number Display -->
+<div class="customize-preview" id="customizePreview">
+    <div class="preview-container">
+        <div class="preview-controls">
+            <button class="preview-view" data-view="front" active>
+                <i class="fas fa-tshirt"></i> Front View
+            </button>
+            <button class="preview-view" data-view="back">
+                <i class="fas fa-tshirt"></i> Back View
+            </button>
+        </div>
+        
+        <!-- Two Preview Cards -->
+        <div class="preview-cards">
+            <!-- With Name Card -->
+            <div class="preview-card-wrapper">
+                <div class="preview-card-label">With Name</div>
+                <div class="preview-product" id="previewWithName">
+                    <img id="previewImageWithName" src="" alt="Jersey with name" />
+                </div>
+            </div>
+            
+            <!-- No Name Card -->
+            <div class="preview-card-wrapper">
+                <div class="preview-card-label">No Name</div>
+                <div class="preview-product" id="previewNoName">
+                    <img id="previewImageNoName" src="" alt="Jersey no name" />
+                </div>
+            </div>
+        </div>
+        
+        <!-- Name & Number Preview Display (Below Cards) -->
+        <div class="preview-name-display" id="previewNameDisplay">
+            <div class="preview-name-display-label">Name & Number Preview</div>
+            <div class="preview-name-display-content">
+                <span class="preview-name-text" id="previewNameText">YOUR NAME</span>
+                <span class="preview-number-text" id="previewNumberText">07</span>
+            </div>
+            <div class="preview-name-status" id="previewNameStatus">
+                <span class="status-dot" id="previewStatusDot"></span>
+                <span id="previewStatusText">No name entered</span>
+            </div>
+        </div>
+        
+        <div class="preview-details" id="previewDetails">
+            <span class="preview-detail" id="previewColor">Color: Deep Blue</span>
+            <span class="preview-detail" id="previewSize">Size: M</span>
+            <span class="preview-detail" id="previewAge">Age: Adult</span>
+        </div>
+    </div>
+</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SHOWCASE SECTION ===== -->
+    <section class="showcase" id="showcase">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Showcase</span>
+                <h2 class="section-title">Premium <span class="gold-text">Jerseys</span></h2>
+                <p class="section-subtitle">Discover our premium custom jersey collection</p>
+            </div>
+            
+            <div class="showcase-grid">
+                <div class="showcase-card">
+                    <div class="showcase-card-image">
+                        <img src="person1.jpg" alt="JMUA Jersey showcase" loading="lazy" onerror="this.src='https://via.placeholder.com/400x400/1A1A1A/D4AF37?text=JMUA+JERSEY'" />
+                    </div>
+                    <div class="showcase-card-content">
+                        <p>Premium quality jerseys designed for style and comfort. Customize with your name and number.</p>
+                    </div>
+                </div>
+                <div class="showcase-card">
+                    <div class="showcase-card-image">
+                        <img src="person2.jpg" alt="JMUA Jersey showcase" loading="lazy" onerror="this.src='https://via.placeholder.com/400x400/1A1A1A/D4AF37?text=JMUA+JERSEY'" />
+                    </div>
+                    <div class="showcase-card-content">
+                        <p>Express your individuality with personalized jerseys. Available in 8 premium colors.</p>
+                    </div>
+                </div>
+                <div class="showcase-card">
+                    <div class="showcase-card-image">
+                        <img src="person3.jpg" alt="JMUA Jersey showcase" loading="lazy" onerror="this.src='https://via.placeholder.com/400x400/1A1A1A/D4AF37?text=JMUA+JERSEY'" />
+                    </div>
+                    <div class="showcase-card-content">
+                        <p>Premium custom jerseys crafted with attention to detail. Perfect for sports, casual wear, and events.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== ABOUT SECTION ===== -->
+    <section class="about-section" id="about">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-text">
+                    <span class="section-tag">About</span>
+                    <h2 class="section-title">The Art of <span class="gold-text">Couture</span></h2>
+                    <div class="about-divider"></div>
+                    <p>
+                        JMUA COUTURE is a premium fashion brand dedicated to the art of personal expression. 
+                        We believe that true luxury lies in the details – the perfect fit, the finest materials, 
+                        and the unique story behind every piece.
+                    </p>
+                    <p>
+                        Our mission is to empower individuals to express their identity through personalized 
+                        jerseys that combine timeless elegance with contemporary style.
+                    </p>
+                    <a href="#customize" class="btn btn-primary" id="aboutCustomizeBtn">
+                        <i class="fas fa-pen-fancy"></i> Start Customizing
+                    </a>
+                </div>
+                <div class="about-image">
+                    <div class="about-image-frame">
+                        <div class="about-image-glow"></div>
+                        <img src="hero-bg.jpg" alt="JMUA COUTURE Craftsmanship" loading="lazy" onerror="this.src='https://via.placeholder.com/600x600/1A1A1A/D4AF37?text=JMUA+COUTURE'" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== ADMIN DASHBOARD ===== -->
+    <section class="admin" id="admin">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Admin</span>
+                <h2 class="section-title">Order <span class="gold-text">Management</span></h2>
+                <p class="section-subtitle">View and manage all pre-orders</p>
+            </div>
+            
+            <div class="admin-stats" id="adminStats">
+                <div class="stat-card">
+                    <span class="stat-icon"><i class="fas fa-shopping-bag"></i></span>
+                    <div>
+                        <div class="stat-number" id="totalOrders">0</div>
+                        <div class="stat-label">Total Orders</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-icon"><i class="fas fa-clock"></i></span>
+                    <div>
+                        <div class="stat-number" id="pendingOrders">0</div>
+                        <div class="stat-label">Pending</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-icon"><i class="fas fa-check-circle"></i></span>
+                    <div>
+                        <div class="stat-number" id="confirmedOrders">0</div>
+                        <div class="stat-label">Confirmed</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="admin-filters">
+                <select id="statusFilter">
+                    <option value="all">All Orders</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Contacted">Contacted</option>
+                    <option value="Payment Pending">Payment Pending</option>
+                    <option value="Confirmed">Confirmed</option>
+                    <option value="In Production">In Production</option>
+                    <option value="Delivered">Delivered</option>
+                    <option value="Cancelled">Cancelled</option>
+                </select>
+                <input type="text" id="searchOrders" placeholder="Search by name, reference, or product..." />
+                <button class="btn btn-primary btn-sm" id="refreshOrdersBtn">
+                    <i class="fas fa-sync-alt"></i> Refresh
+                </button>
+            </div>
+            
+            <div class="table-wrapper">
+                <table id="ordersTable">
+                    <thead>
+                        <tr>
+                            <th>Reference</th>
+                            <th>Customer</th>
+                            <th>Product</th>
+                            <th>Customization</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ordersBody">
+                        <!-- Orders loaded dynamically -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <h3><span class="gold-text">JMUA</span> COUTURE</h3>
+                    <p>Premium custom jerseys for the discerning individual.</p>
+                    <div class="footer-social">
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                        <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h4>Quick Links</h4>
+                        <ul>
+                            <li><a href="#products">Jerseys</a></li>
+                            <li><a href="#customize">Customize</a></li>
+                            <li><a href="#showcase">Showcase</a></li>
+                            <li><a href="#about">About</a></li>
+                            <li><a href="#admin">Admin</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Contact</h4>
+                        <ul>
+                            <li><a href="https://wa.me/2347063615829" target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp</a></li>
+                            <li><a href="mailto:ayoolajamiu16@gmail.com"><i class="fas fa-envelope"></i> Email</a></li>
+                            <li><a href="#"><i class="fas fa-phone"></i> +234 706 361 5829</a></li>
+                            <li><a href="#"><i class="fas fa-map-marker-alt"></i> Alimosho, Lagos, Nigeria</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 JMUA COUTURE. All rights reserved. Crafted with <span class="gold-text">♥</span></p>
+            </div>
+        </div>
+        <div class="footer-curve"></div>
+    </footer>
+
+    <!-- ===== AUTH MODAL ===== -->
+    <div class="auth-overlay" id="authOverlay">
+        <div class="auth-modal">
+            <button class="close-auth" id="closeAuth"><i class="fas fa-times"></i></button>
+            <h2 id="authTitle">Sign In</h2>
+            
+            <form id="authForm" novalidate>
+                <div id="signupFields" style="display:none;">
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" id="signupName" placeholder="Enter your full name" />
+                    </div>
+                    <div class="form-group">
+                        <label>Phone</label>
+                        <input type="tel" id="signupPhone" placeholder="Enter your phone number" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="authEmail" placeholder="Enter your email" required />
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="authPassword" placeholder="Enter your password" required minlength="6" />
+                </div>
+                <button type="submit" class="btn btn-primary" id="authSubmitBtn">
+                    <i class="fas fa-sign-in-alt"></i> Sign In
+                </button>
+            </form>
+            
+            <div class="auth-switch">
+                <span id="authSwitchText">Don't have an account?</span>
+                <a id="authSwitchLink">Sign Up</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== CONFIRMATION MODAL ===== -->
+    <div class="confirmation-overlay" id="confirmationOverlay">
+        <div class="confirmation-card" style="position:relative;">
+            <button class="close-btn" id="closeConfirmation"><i class="fas fa-times"></i></button>
+            <h2><i class="fas fa-check-circle" style="color:#4CAF50;"></i> Confirm Your Order</h2>
+            
+            <div id="confirmationDetails">
+                <!-- Loaded dynamically -->
+            </div>
+            
+            <div class="actions">
+                <button class="btn btn-outline" id="cancelConfirmation">Cancel</button>
+                <button class="btn btn-primary" id="confirmOrderBtn">
+                    <i class="fas fa-check"></i> Confirm Pre-Order
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== TOUR POPUP ===== -->
+<div class="tour-overlay" id="tourOverlay">
+    <div class="tour-container" id="tourContainer">
+        <div class="tour-header">
+            <div class="tour-progress">
+                <span class="tour-step" id="tourStep">1/8</span>
+                <div class="tour-progress-bar">
+                    <div class="tour-progress-fill" id="tourProgressFill"></div>
+                </div>
+            </div>
+            <button class="tour-close" id="tourClose">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="tour-body">
+            <div class="tour-icon" id="tourIcon">👋</div>
+            <h3 id="tourTitle">Welcome to JMUA COUTURE!</h3>
+            <p id="tourDesc">Let's take a quick tour to help you customize your perfect jersey.</p>
+        </div>
+        <div class="tour-footer">
+            <button class="tour-btn tour-btn-skip" id="tourSkip">Skip Tour</button>
+            <button class="tour-btn tour-btn-next" id="tourNext">
+                Next <i class="fas fa-arrow-right"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Tour Start Button -->
+<button class="tour-start-btn" id="tourStartBtn" title="Start Tour">
+    <i class="fas fa-compass"></i>
+</button>
+    <!-- ===== TOAST NOTIFICATION ===== -->
+    <div class="toast" id="toast"></div>
+
+    <!-- ===== SCRIPTS ===== -->
+    <script src="script.js"></script>
+</body>
+</html>
